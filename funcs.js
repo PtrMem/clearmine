@@ -196,8 +196,8 @@ function clearmines(e){
                     player.time=parseInt((new Date().getTime()-player.time)/1000);
                     gamestatus=-1;
                     swallboom();
-                    setTimeout(function(){show("boom");},2000);
-                    setTimeout(function(){show("fault");},2000);
+                    setTimeout(function(){show("boom");},1500);
+                    setTimeout(function(){show("fault");},4000);
                 }else{
                     showTips(ht,wd);
                 }
@@ -255,8 +255,6 @@ function clearmines(e){
 
 function listenchse(e){
     var etarget=e.target;
-    if(etarget.type!="click")
-        return;
     if(etarget.nodeName.toUpperCase()=='A'){
         if(etarget.id=="close"){
             etarget.parentNode.parentNode.style.display="none"; 
