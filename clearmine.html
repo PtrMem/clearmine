@@ -1,0 +1,241 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>clear mines game</title>
+<style type="text/css">
+    a{
+        text-decoration:none;
+    }
+    a:link,a:visited,a:hover,a:active{
+        color:#000;
+    }
+    ul,li{
+        list-style-type:none;
+    }
+
+/*
+*game map
+*/
+    table{
+        border-spacing:0;
+        border-left:1px solid black;
+        border-top:1px solid black;
+        margin:0 auto;
+    }
+    td{
+        height:35px;
+        width:35px;
+        background-color:rgb(92,123,216);
+        border-bottom:1px solid black;
+        border-right:1px solid black;
+        text-align:center;
+    }
+    
+
+    #wrap{
+        width:980px;
+        margin:0px auto;
+        position:relative;
+    }
+    #mainer{
+        padding-top:20px;
+        margin:0 auto;
+        z-index:1;
+    }
+
+
+    /*game over
+    * set it in center
+    */  
+    html,body{
+        height:100%;
+        overflow:hidden;
+    }
+    body{
+        overflow:auto;
+    }  
+    #gameover{
+        position:absolute;
+        width:500px;
+        height:400px;
+        z-index:20;
+        left:50%;
+        top:50%;
+        margin-left:-250px;
+        margin-top:-200px;
+        background-color:white;
+        background-repeat:no-repeat;
+        line-height:30px;
+    }
+    #playerinfo,#gameover,#endchoose,#modesinfo,#modetxt{
+        display:none;
+        text-align:center;
+    }
+    
+    #over{
+        position:absolute;
+        bottom:20px;
+        height:120px;
+    }
+    #endchoose,#modesinfo,#over{
+        position:absolute;
+        width:100%;       
+        margin-bottom:5px;
+        bottom:0px;
+    }
+    #over{        
+        bottom:10px;
+        height:100px;
+    }
+    
+    #endchoose a{
+        margin-right:30px;
+        bottom:3px;
+    }
+    #modesinfo{
+        margin:0;
+        padding:0;
+        border:0;
+        bottom:10px;
+    }
+    #modes a{
+        display:inline-block;
+    }
+
+/*game status*/    
+    #gamestatus,#gstlt,#gstrt{
+        position:absolute;        
+    }
+    #gamestatus{
+        margin:0 auto;
+    }
+    #gamestatus span{
+        margin-top:15px;
+        margin-right:20px;
+        margin-left:20px;
+        width:100px;
+        height:30px;
+        display:block;  
+        text-align:center;  
+        background-color:rgb(92,123,216);
+        color:white;
+        font-size:20px;
+    }
+    #gstlt,#gstrt{
+        top:10px;
+    }
+    #gstlt{
+        left:0px;
+    }
+    #gstrt{
+        right:0px;
+    }
+
+    #gstltimg span,#gstltimg{
+        float:left;
+    }
+    #gstrtimg,#gstrtimg span{
+        float:right;
+    }
+    
+</style>
+</head>
+<body>
+<div id="gameover">
+        <div id="playerinfo">            
+        </div>
+        <div id="over">
+            <div id="modesinfo" class="gamemode">
+                <ul>
+                    <li id="modetxt"></li>
+                    <li id="modes"><a href="####">初级</a>
+                    <a href="####">中级</a>
+                    <a href="####">高级</a></li>
+                </ul>
+            </div>
+            <div id="endchoose">
+                <a href="###" id="exit">exit</a>
+                <a href="###" id="newgame">newgame</a>
+            </div>
+        </div>
+</div>
+<div id="wrap">
+    <div id="mainer">
+        <table id="map">
+        </table>
+        <div id="gamestatus">
+        <div id="gstlt">
+            <img id="gstltimg" src="imgs/time.jpg" alt="时间: "><span id="gametime"></span>
+        </div>
+        <div id="gstrt">
+            <img id="gstrtimg" src="imgs/mine.jpg" alt="地雷数: "><span id="minenumber"></span>
+        </div>
+    </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+document.getElementById("mainer").oncontextmenu=function(){return false;}
+document.getElementById("over").oncontextmenu=function(){return false;}
+</script>
+
+<script>
+    /**
+     *   create game main front end 
+     *  which have 9x9 and 10 mines gamemap
+     */
+    var height,width;
+    height=9;
+    width=9;
+function creatFrontEnd(ht,wd){
+    var frontEnd=document.getElementById("map");
+    var tmp=' ';
+    var ret=' ';
+    var rets=new Array();
+    for(var j=0;j<wd;j++){
+        tmp+='<td></td>';
+    }
+    for(var i=0;i<ht;i++){
+        ret='<tr>'+tmp+'</tr>';
+        rets[i]=ret;
+    } 
+    //set the map
+    frontEnd.innerHTML=rets.join(' ');
+    //set gamestatus
+    var gst=document.getElementById("gamestatus");
+    var gstimgrt=document.getElementById("gstrtimg");
+    var gstimglt=document.getElementById("gstltimg");
+    ret=wd>9?16:9;
+    switch(ret){
+        case 9:
+            //set gamestatus in center
+            gst.style.width=9*35+'px';
+            gst.style.marginLeft=parseInt((980-9*35)/2)+"px";
+            gstimgrt.style.width='60px';
+            gstimgrt.style.height='60px';
+            gstimglt.style.height='60px';
+            gstimglt.style.width='60px';
+            break;
+        case 16:
+            gst.style.width=16*25+'px';
+            gst.style.marginLeft=parseInt((980-16*25)/2)+"px";
+            gstimgrt.style.width='50px';
+            gstimgrt.style.height='50px';
+            gstimglt.style.height='50px';
+            gstimglt.style.width='50px';
+            var tds=document.getElementsByTagName("td");
+            for(var i=0;i<tds.length;i++){
+                tds[i].style.width='25px';
+                tds[i].style.height='25px';
+            }
+            break;
+            
+    }
+}
+
+creatFrontEnd(height,width);
+
+</script>
+<script type="text/javascript" src="funcs.js"></script>
+<script type="text/javascript" src="mineclear.js"></script>
