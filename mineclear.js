@@ -30,9 +30,6 @@ gamemap=new Array();
 playermap=new Array();
 minepos=new Array();
 
-//hold the status mouse in modes 
-//var inmode=0;
-
 
 //set gamemap and playermap to 0
 var arr=new Array();
@@ -52,19 +49,20 @@ for(var i=0;i<mapinfo.mineNum;i++){
     //is exist?
     if(minepos[k]!=-1){
         minepos[k]=-1;
+        arr[i]=k;
     }else{
         --i;
     }
 }
 
+//set minepos to the length is mapinfo.mineNum
+minepos=arr.slice(0);
 //create game map
 //array[] transform to array[][]
-for(var i=0;i<minepos.length;i++){
-    if(minepos[i]==-1){
-        var w=parseInt(i%(mapinfo.width));
-        var h=parseInt(i/(mapinfo.width));
+for(var i=0;i<mapinfo.mineNum;i++){
+        var w=parseInt(minepos[i]%(mapinfo.width));
+        var h=parseInt(minepos[i]/(mapinfo.width));
         gamemap[h][w]=-1;
-    }
 }
 /**
  * setTips 
@@ -77,10 +75,9 @@ for(var i=0;i<minepos.length;i++){
  * @param ht $ht mean y 
  * @param wd $wd mean x
  */
-for(var i=0;i<minepos.length;i++){
-    if(minepos[i]==-1){
-        var wd=parseInt(i%(mapinfo.width));
-        var ht=parseInt(i/(mapinfo.width));
+for(var i=0;i<mapinfo.mineNum;i++){
+        var wd=parseInt(minepos[i]%(mapinfo.width));
+        var ht=parseInt(minepos[i]/(mapinfo.width));
         setTips(ht,wd-1);
         setTips(ht,wd+1);
         setTips(ht-1,wd);
@@ -89,10 +86,9 @@ for(var i=0;i<minepos.length;i++){
         setTips(ht+1,wd);
         setTips(ht+1,wd-1);
         setTips(ht+1,wd+1);
-    }
 }
 
-//set the unbegin game  information to front end 
+//set the  game doesnot start information to front end 
 var swminenum=document.getElementById('minenumber');
 var swtime=document.getElementById("gametime");
 swminenum.innerHTML=mapinfo.mineNum;
@@ -106,4 +102,5 @@ document.getElementById("gameover").addEventListener("mouseout",hidemodes,false)
 document.getElementById("newgame").addEventListener("mouseover",swbynewg,false);
 document.getElementById("modes").addEventListener("mouseover",swmodesinfo,false);
 document.getElementById("modes").addEventListener("mouseout",hidetxt,false);
-document.getElementById("exit").addEventListener("mouseover",hdbyexit,false);
+document.getElementById("close").addEventListener("mouseover",hdbyexit,false);
+

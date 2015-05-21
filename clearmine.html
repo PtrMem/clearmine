@@ -75,7 +75,7 @@
     #over{
         position:absolute;
         bottom:20px;
-        height:120px;
+        height:60px;
     }
     #endchoose,#modesinfo,#over{
         position:absolute;
@@ -98,9 +98,7 @@
         border:0;
         bottom:10px;
     }
-    #modes a{
-        display:inline-block;
-    }
+
 
 /*game status*/    
     #gamestatus,#gstlt,#gstrt{
@@ -154,7 +152,7 @@
                 </ul>
             </div>
             <div id="endchoose">
-                <a href="###" id="exit">exit</a>
+                <a href="###" id="close">close</a>
                 <a href="###" id="newgame">newgame</a>
             </div>
         </div>
@@ -209,7 +207,7 @@ function creatFrontEnd(ht,wd){
     ret=wd>9?16:9;
     switch(ret){
         case 9:
-            //set gamestatus in center
+            //set gamestatus in the center
             gst.style.width=9*35+'px';
             gst.style.marginLeft=parseInt((980-9*35)/2)+"px";
             gstimgrt.style.width='60px';

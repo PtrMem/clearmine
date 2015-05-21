@@ -28,6 +28,7 @@ function setTips(ht,wd){
     }
 }
 
+//in the range?
 function statisfy(h,w){
     if(w<mapinfo.width&&w>=0&&h<mapinfo.height&&h>=0){
             return true;
@@ -87,13 +88,9 @@ function swallboom(){
     img.src=imgbase+allboom;
     img.alt="X";
     var w,h,tmp,childs;
-    //var img=document.createElement("img");
-    //img.src=imgbase+allboom;
-    //img.alt="X";
-    for(var i=0;i<minepos.length;i++){
-        if(minepos[i]==-1){
-            w=parseInt(i%(mapinfo.width));
-            h=parseInt(i/(mapinfo.width));
+    for(var i=0;i<mapinfo.mineNum;i++){
+            w=parseInt(minepos[i]%(mapinfo.width));
+            h=parseInt(minepos[i]/(mapinfo.width));
             tmp=tb.rows[h].cells;
             childs=tmp[w].childNodes;
             //alert(tmp[w].nodeName);
@@ -110,10 +107,10 @@ function swallboom(){
             }else{
                 tmp[w].appendChild(img.cloneNode(true));
             }
-        }
     }
     
 }
+//show the game status:win,fault,and boom 
 function show(key){
     var playif=document.getElementById("playerinfo");
     var sw=document.getElementById("gameover");
@@ -140,10 +137,11 @@ function show(key){
     ret=ret+'")';
 
     sw.style.backgroundImage=ret;
-    ret=player.time>60?player.time>3600?parseInt(player.time/3600)+'小时':parseInt(player.time/60)+'分':player.time+'秒';
-    playif.innerHTML=alt+'<p>时间: '+ret+'</p>';
-    //show the image of boom or win or fault 
+    //ret=player.time>60?player.time>3600?parseInt(player.time/3600)+'小时'+parseInt(player.time%3600)+'分'+:parseInt(player.time/60)+'分':player.time+'秒';
+    //get player.time 
+    playif.innerHTML=alt+'<p>时间: '+player.time+'秒</p>';   
     document.body.style.backgroundColor="gray";  
+    //show the image of boom or win or fault 
     sw.style.display="block";
 
     //hide the image;
@@ -171,9 +169,8 @@ function clearmines(e){
     var setmark=document.createElement("img");
     setmark.src=imgbase+mark;
     setmark.alt="X";
-    //set mine number and time to front end
+    //update mine number and time on front end
     var swminenum=document.getElementById('minenumber');
-    var swtime=document.getElementById("gametime");
     //if happan on td element
     if(target.nodeName.toUpperCase()=="TD"){
         if(gamestatus==0){
@@ -181,6 +178,7 @@ function clearmines(e){
             gamestatus=1;
             player.time=new Date().getTime();
             player.mineNum=mapinfo.mineNum;
+            //begin update playing time
             swpytime();
         }
         //get the position
@@ -196,7 +194,7 @@ function clearmines(e){
                     player.time=parseInt((new Date().getTime()-player.time)/1000);
                     gamestatus=-1;
                     swallboom();
-                    setTimeout(function(){show("boom");},1500);
+                    setTimeout(function(){show("boom");},1000);
                     setTimeout(function(){show("fault");},4000);
                 }else{
                     showTips(ht,wd);
@@ -255,11 +253,12 @@ function clearmines(e){
 
 function listenchse(e){
     var etarget=e.target;
+    var gameover=document.getElementById("gameover")
     if(etarget.nodeName.toUpperCase()=='A'){
         if(etarget.id=="close"){
-            etarget.parentNode.parentNode.style.display="none"; 
+            gameover.style.display="none"; 
         }else if(etarget.id=="newgame"){
-            etarget.parentNode.parentNode.style.display="none"; 
+            gameover.style.display="none"; 
             location.reload("true");
         }
         
