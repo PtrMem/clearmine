@@ -41,14 +41,17 @@ function showTips(h,w){
             showTips(h+1,w+1);                
     }
 }
-//show playing time
+//update playing time
 function swpytime(){
-    if(game.status==-1)
+    if(game.status==-1){
+        clearTimeout(game.pyTimeHd);
+        game.pyTimeHd=0;
         return;
+    }
     var pt=document.getElementById("gametime");
     pt.innerHTML=parseInt((new Date().getTime()-game.player.time)/1000);
     if(game.status==1)
-        setTimeout(swpytime,1000);
+        game.pyTimeHd=setTimeout(swpytime,1000);
 }
 
 //set all the mines are boom
@@ -85,6 +88,7 @@ function show(key){
     var playif=document.getElementById("playerinfo");
     var sw=document.getElementById("gameover");
     var che=document.getElementById("endchoose");
+    var op=document.getElementById("options");
     var alt="";
     var ret='url("';
     var isboom=0;
@@ -108,7 +112,8 @@ function show(key){
     //show the game staust image
     sw.style.backgroundImage=ret;
     //get player time 
-    playif.innerHTML=alt+'<p>时间: '+game.player.time+'秒</p>';   
+    playif.innerHTML=alt+'<p>时间: '+game.player.time+'秒</p>';  
+    op.style.display="none";
     document.body.style.backgroundColor="gray";  
     //show the image of boom or win or fault 
     sw.style.display="block";
@@ -121,6 +126,7 @@ function show(key){
             document.getElementById("gameover").style.backgroundImage='';
             document.getElementById("endchoose").style.display="block";
             document.getElementById("over").style.display="block";
+            document.getElementById("options").style.display="block";
         },2000);
 }
 
@@ -178,7 +184,7 @@ function clearmines(e){
                     //show mark
                     if(target.style.backgroundColor!='white')
                         target.appendChild(setmark);
-                    //updata mine number onf front-end
+                    //update mine number onf front-end
                     swminenum.innerHTML=game.player.mineNum;
 
                 }else{
@@ -196,7 +202,9 @@ function clearmines(e){
         }
         //really clear all?
         //compare the mine number and the count had opened
-        if(game.map.info.mineNum==0&&game.done==game.map.info.height*game.map.info.width-game.map.info.mineNum){
+        if(game.map.info.mineNum==0)
+            var a=0;
+        if(game.map.info.mineNum==0&&game.done==pyingMapIf.height*pyingMapIf.width-pyingMapIf.mineNum){
             game.player.time=parseInt((new Date().getTime()-game.player.time)/1000);
             game.status=-1;
             show("win");
@@ -226,20 +234,22 @@ function listenchse(e){
     var etarget=e.target;
     var gameover=document.getElementById("gameover")
     var curmode=game.map.info.mode;
+    var ret;
     if(etarget.nodeName.toUpperCase()=='A'){
         if(etarget.id=="close"){
             gameover.style.display="none"; 
         }else if(etarget.id=="newgame"){
             //start new game with current game mode
-            newGame(game.map.info);
+            newGame(pyingMapIf);
             gameover.style.display="none";                
         }else if(etarget.parentNode.id=="modes"){
             if(etarget.innerHTML=="初级")
-                newGame(easy);
+                ret=easy;
             else if(etarget.innerHTML=="中级")
-                newGame(normal);
+                ret=normal;
             else if(etarget.innerHTML=="高级")
-                newGame(hard);
+                ret=hard;
+            newGame(cloneObj(ret));
             gameover.style.display="none";
         }       
     }
@@ -250,13 +260,16 @@ function newGame(mapinfo){
     document.getElementById("playerinfo").style.display="none";
     document.getElementById("endchoose").style.display="none";
     document.getElementById("modesinfo").style.display="none";
+    document.getElementById("gameover").style.display="none";
     document.body.style.backgroundColor="white";
-    document.getElementById("gametime").innerHTML='0';
     //create new game data 
     //mines position,game map and player map
     game.createBgData(mapinfo);
     //create the game front-end 
     game.createFrontEnd(mapinfo);
+    //set the playing map info,deep copy
+    pyingMapIf=cloneObj(mapinfo);
+ //   document.getElementById("gametime").innerHTML='0';
     
 }
 
@@ -381,3 +394,15 @@ function hdOpMdif(e){
     if(target.nodeName.toUpperCase()=="LI"||target.nodeName.toUpperCase()=="A"||target.nodeName.toUpperCase()=="UL")
         dest.style.display="none";
 }
+
+//clone object
+function cloneObj(obj){
+    if(typeof(obj)!="object")
+        return;
+    var cln={};
+    var atr;
+    for(atr in obj)
+        cln[atr]=obj[atr];
+    return cln;
+}
+

@@ -89,6 +89,7 @@ Map.prototype.createMap=function(){
 }
 
 function ClearMine(mapinfo){
+    this.pyTimeHd=0;    // the updata playing time handle 
     this.player=new Player();
     this.status=0;      //game status:0 mean doesnot start ,1 mean playing,-1 mean game over
     this.frontEnds=new Array();
@@ -156,9 +157,11 @@ ClearMine.prototype.createFrontEnd=function(mapinfo){
     var gst=document.getElementById("gamestatus");
     var gstimgrt=document.getElementById("gstrtimg");
     var gstimglt=document.getElementById("gstltimg");
-    //for setting the  game doesnot start information to front end 
-    var swminenum=document.getElementById('minenumber');
-    var swtime=document.getElementById("gametime");
+    //for setting the  game doesnot start information to front end     
+    //setthe  game doesnot start information to front end 
+    document.getElementById('minenumber').innerHTML=mapinfo.mineNum;
+    document.getElementById('gametime').innerHTML='0';
+    
     //create the grids
     var fd='';
     var tmp=' ';
@@ -210,9 +213,6 @@ ClearMine.prototype.createFrontEnd=function(mapinfo){
             }
             break;
     }
-    //setthe  game doesnot start information to front end 
-    swminenum.innerHTML=mapinfo.mineNum;
-    swtime.innerHTML='0';
 };
 
     //listen player operations
@@ -230,19 +230,4 @@ ClearMine.prototype.listenplayer=function(){
     document.getElementById("options").addEventListener("mouseover",swOpMdif,false);
     document.getElementById("options").addEventListener("mouseout",hdOpMdif,false);
 };
-
-
-/**
- * setTips 
- * set the number around mine
- * 
- *      x-1,y-1|x,y-1|x+1,y+1
- *      x-1,y  | x,y |x+1,y
- *      x-1,y+1|x,y+1|x+1,y+1
- * 
- * @param ht $ht mean y 
- * @param wd $wd mean x
- */
-
-
 
