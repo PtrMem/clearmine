@@ -51,9 +51,10 @@ function swpytime(){
         setTimeout(swpytime,1000);
 }
 
-//set all the mines is boom
+//set all the mines are boom
 function swallboom(){
     var tb=document.getElementById('map');
+    //boom img
     var img=document.createElement("img");
     img.src=imgbase+allboom;
     img.alt="X";
@@ -63,7 +64,6 @@ function swallboom(){
             h=parseInt(game.map.minePos[i]/(game.map.info.width));
             tmp=tb.rows[h].cells;
             childs=tmp[w].childNodes;
-            //alert(tmp[w].nodeName);
             //if had marked then remove the marked and set boom
             if(game.map.playerMap[h][w]==1){
                 if(childs.length!=0){
@@ -105,10 +105,9 @@ function show(key){
             break;           
     }
     ret=ret+'")';
-
+    //show the game staust image
     sw.style.backgroundImage=ret;
-    //ret=game.player.time>60?game.player.time>3600?parseInt(game.player.time/3600)+'小时'+parseInt(game.player.time%3600)+'分'+:parseInt(game.player.time/60)+'分':game.player.time+'秒';
-    //get game.player.time 
+    //get player time 
     playif.innerHTML=alt+'<p>时间: '+game.player.time+'秒</p>';   
     document.body.style.backgroundColor="gray";  
     //show the image of boom or win or fault 
@@ -139,7 +138,7 @@ function clearmines(e){
     var setmark=document.createElement("img");
     setmark.src=imgbase+mark;
     setmark.alt="X";
-    //update mine number and time on front end
+    //for update mine number on front end
     var swminenum=document.getElementById('minenumber');
     //if happan on td element
     if(target.nodeName.toUpperCase()=="TD"){
@@ -159,7 +158,7 @@ function clearmines(e){
         if(game.map.playerMap[ht][wd]!=1){
             //if left button down
             if(e.button==0){
-                //is mine? yes show boom
+                //is mine? yes show boom and fault
                 if(game.map.gameMap[ht][wd]==-1){
                     game.player.time=parseInt((new Date().getTime()-game.player.time)/1000);
                     game.status=-1;
@@ -179,10 +178,11 @@ function clearmines(e){
                     //show mark
                     if(target.style.backgroundColor!='white')
                         target.appendChild(setmark);
+                    //updata mine number onf front-end
                     swminenum.innerHTML=game.player.mineNum;
 
                 }else{
-                    gaem.player.mineNum--;
+                    game.player.mineNum--;
                     //set player mark
                     game.map.playerMap[ht][wd]=1;
                     //show mark
@@ -230,10 +230,10 @@ function listenchse(e){
         if(etarget.id=="close"){
             gameover.style.display="none"; 
         }else if(etarget.id=="newgame"){
+            //start new game with current game mode
             newGame(game.map.info);
             gameover.style.display="none";                
         }else if(etarget.parentNode.id=="modes"){
-            gameover.style.display="none";
             if(etarget.innerHTML=="初级")
                 newGame(easy);
             else if(etarget.innerHTML=="中级")
@@ -251,13 +251,16 @@ function newGame(mapinfo){
     document.getElementById("endchoose").style.display="none";
     document.getElementById("modesinfo").style.display="none";
     document.body.style.backgroundColor="white";
+    document.getElementById("gametime").innerHTML='0';
     //create new game data 
     //mines position,game map and player map
     game.createBgData(mapinfo);
     //create the game front-end 
     game.createFrontEnd(mapinfo);
+    
 }
 
+//clear game data for start new game
 function resetGame(){
     game.done=0;
     game.status=0;

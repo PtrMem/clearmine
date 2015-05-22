@@ -205,8 +205,8 @@ ClearMine.prototype.createFrontEnd=function(mapinfo){
             gstimglt.style.width=tmp;
             var tds=document.getElementsByTagName("td");
             for(var i=0;i<tds.length;i++){
-                tds[i].style.width='25px';
-                tds[i].style.height='25px';
+                tds[i].style.width='27px';
+                tds[i].style.height='27px';
             }
             break;
     }
