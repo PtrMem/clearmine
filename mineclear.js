@@ -7,6 +7,12 @@ function MapInfo(ht,wd,mine,mode){
 
 };
 
+function Player(){
+    this.time=0;
+    this.mode="";
+    this.mineNum=0;
+}
+
 function Map(mapinfo){
     this.info=mapinfo;
     this.playerMap=new Array(); //hold the player marked
@@ -83,7 +89,7 @@ Map.prototype.createMap=function(){
 }
 
 function ClearMine(mapinfo){
-    this.player={"time":0,"mode":''};
+    this.player=new Player();
     this.status=0;      //game status:0 mean doesnot start ,1 mean playing,-1 mean game over
     this.frontEnds=new Array();
     this.map=new Map(mapinfo); //default map
@@ -217,9 +223,12 @@ ClearMine.prototype.listenplayer=function(){
     document.getElementById("gameover").addEventListener("click",listenchse,false);
     document.getElementById("gameover").addEventListener("mouseout",hidemodes,false);
     document.getElementById("newgame").addEventListener("mouseover",swbynewg,false);
-    document.getElementById("modes").addEventListener("mouseover",swmodesinfo,false);
+    document.getElementById("modes").addEventListener("mouseover",swOverModeif,false);
     document.getElementById("modes").addEventListener("mouseout",hidetxt,false);
-    document.getElementById("close").addEventListener("mouseover",hdbyexit,false);
+    //listen options click
+    document.getElementById("options").addEventListener("click",optionCk,false);
+    document.getElementById("options").addEventListener("mouseover",swOpMdif,false);
+    document.getElementById("options").addEventListener("mouseout",hdOpMdif,false);
 };
 
 
