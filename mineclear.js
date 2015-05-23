@@ -9,7 +9,7 @@ function MapInfo(ht,wd,mine,mode){
 
 function Player(){
     this.time=0;
-    this.mode="";
+    this.mode=" ";
     this.mineNum=0;
 }
 
@@ -143,7 +143,7 @@ ClearMine.prototype.getdefFend=function(mode){
 //create game map data
 ClearMine.prototype.createBgData=function(mapinfo){
     //create game map data
-    this.player.mode=mapinfo.mode;
+    this.player.mode=mapinfo.mode.slice(0);
     this.player.mineNum=mapinfo.mineNum;
     this.map=new Map(mapinfo).createMap();
 };

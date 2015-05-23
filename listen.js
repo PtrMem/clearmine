@@ -176,25 +176,28 @@ function clearmines(e){
                 }
                 //if right button down
             }else if(e.button==2){
-                if(game.map.gameMap[ht][wd]==-1){
-                    game.map.info.mineNum--;
-                    game.player.mineNum--;
-                    //set player mark
-                    game.map.playerMap[ht][wd]=1;
-                    //show mark
-                    if(target.style.backgroundColor!='white')
-                        target.appendChild(setmark);
-                    //update mine number onf front-end
-                    swminenum.innerHTML=game.player.mineNum;
+                if(target.style.backgroundColor!="white"){
+                    
+                    if(game.map.gameMap[ht][wd]==-1){
+                        game.map.info.mineNum--;
+                        game.player.mineNum--;
+                        //set player mark
+                        game.map.playerMap[ht][wd]=1;
+                        //show mark
+                        if(target.style.backgroundColor!='white')
+                            target.appendChild(setmark);
+                            //update mine number onf front-end
+                        swminenum.innerHTML=game.player.mineNum;
 
-                }else{
-                    game.player.mineNum--;
-                    //set player mark
-                    game.map.playerMap[ht][wd]=1;
-                    //show mark
-                    if(target.style.backgroundColor!='white')
-                        target.appendChild(setmark);
-                    swminenum.innerHTML=game.player.mineNum;
+                    }else{
+                        game.player.mineNum--;
+                        //set player mark
+                        game.map.playerMap[ht][wd]=1;
+                        //show mark
+                        if(target.style.backgroundColor!='white')
+                            target.appendChild(setmark);
+                        swminenum.innerHTML=game.player.mineNum;
+                    }
                 }
 
             }
@@ -357,24 +360,31 @@ function modeContx(key){
 //listen options funcitons
 function optionCk(e){
    var target=e.target;
+   var ismode=0;
    var ret;
     if(target.nodeName.toUpperCase()=="A"){
         switch(target.innerHTML){
             case "初级":
                 ret=easy;
+                ismode=1;
                 break;
             case "中级":
                 ret=normal;
+                ismode=1;
                 break;
             case "高级":
                 ret=hard;
+                ismode=1;
+                break;
+            default:
                 break;
         }
-        
-        newGame(ret);
+        if(ismode)
+            newGame(ret);
     }
 }
 
+//show the modes information on options panal
 function swOpMdif(e){
     var target=e.target;
     var pos=target.parentNode.getBoundingClientRect();
@@ -388,6 +398,7 @@ function swOpMdif(e){
 
 }
 
+//hide the modes information on options panal
 function hdOpMdif(e){
     var dest=document.getElementById('popup');
     var target=e.target;
