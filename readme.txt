@@ -1,5 +1,6 @@
 clear mine
 this game just for learn
+run on chrome and firefox
 
 version 0.1
 implement by javasctipt and html

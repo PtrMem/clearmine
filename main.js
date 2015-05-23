@@ -11,7 +11,7 @@ var normal=new MapInfo(16,16,40,"normal");
 var hard=new MapInfo(16,30,99,"hard");
 //default mode 9x9 grids 10 mines
 var game=new ClearMine(cloneObj(easy));
-//hold the map copy
+//hold the map information copy
 var pyingMapIf=cloneObj(game.map.info);
 game.createBgData(game.map.info);
 game.createFrontEnd(game.map.info);
